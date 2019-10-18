@@ -1,0 +1,18 @@
+﻿Gerekli Kütüphaneler
+	scikit_learn
+	matplotlib
+	opencv
+	numpy
+	keras
+	
+Program Çalıştırılması
+	- Program çalıştırılmadan önce gerekli olan kütüphaneler eklenmelidir.
+	- Programın çalıştırılabilmesi için program ile kullanılacak veri seti aynı dizinde olmasıdır.
+	- Kullanılacak veri setinin ismi Dataset olmalıdır.
+	- Dataset dizini altında sınıf klasörleri (cup, pizza vb.) bulunmalıdır.
+
+Program Hakkında
+	* Dataset isimli klasör içinde bulunan sınıflardaki resimler Data klasörü altında train ve test klasörlerine yerleştirilmiştir.
+	* Data klasör yapısına rapor içerisinden ulaşabilirsiniz.
+	* Checkpoints adlı klasör içerisine en son çalıştırılan iterasyondaki ağ ağırlıkları hdf5 dosya uzantısıyla kaydedilir.
+	* Output isimli klasöre belirtilen sınıf içindeki resimlerin türleri (CNN ağı tahminleri) resim üzerine yazılmış bir şekilde kaydedilir. 
