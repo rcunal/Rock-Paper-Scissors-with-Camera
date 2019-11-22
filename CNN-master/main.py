@@ -10,10 +10,14 @@ import random
 import keras
 import cv2
 import os
+# from keras.layers import Dense,GlobalAveragePooling2D
+# from keras.applications import MobileNet, VGG16
+# from keras.models import Model
+N_EPOCHS = 15
+BATCH_SIZE = 4
 
 def getImageNamesAndClassLabels(path='Dataset'):
     class_list = os.listdir(path)
-
     image_names = []
     labels = []
     for class_name in class_list:
@@ -22,12 +26,15 @@ def getImageNamesAndClassLabels(path='Dataset'):
         for image_name in image_list:
             image_names.append(image_name)
             labels.append(class_name)
+    # print("number of all images ",len(image_names))
     return image_names, labels
 
 def splitDatasetTrainAndTest(image_names, labels):
-    print("\nThe images are divided into test and train folder")
-    train_images, test_images, train_labels, test_labels = train_test_split(image_names, labels, test_size=0.1)
-    return train_images, test_images, train_labels, test_labels
+    print("\nThe images are divided into test, train and validation folder")
+    train_images, test_images, train_labels, test_labels = train_test_split(image_names, labels, shuffle = True, test_size=0.2)
+    train_images, val_images, train_labels, val_labels = train_test_split(train_images, train_labels, shuffle = True, test_size=0.25,
+                                                                          random_state=1)
+    return train_images, test_images, train_labels, test_labels, val_images, val_labels
 
 def findUniqueLabels(path="Dataset"):
     return os.listdir(path)
@@ -36,7 +43,7 @@ def createFolders(unique_labels, path='Data'):
     if not (os.path.exists(path)):
         os.makedirs(path)
 
-    under_data_folder = ['train', 'test']
+    under_data_folder = ['train', 'test', 'validation']
     for folder_name in under_data_folder:
         if not (os.path.exists(os.path.join(path, folder_name))):
             os.makedirs(os.path.join(path, folder_name))
@@ -45,13 +52,28 @@ def createFolders(unique_labels, path='Data'):
             if not (os.path.exists(os.path.join(path, folder_name, labels))):
                 os.makedirs(os.path.join(path, folder_name, labels))
 
-def prepareTrainAndTestFolder(path, prev_path, images, labels):
-    for i in range(0, len(images)):
-        img = cv2.imread(os.path.join(prev_path, labels[i], images[i]), 1)
-        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        resized_img = cv2.resize(img, (200, 200), interpolation=cv2.INTER_AREA)
-        if not (os.path.isfile(os.path.join(path, labels[i], images[i]))):
-            cv2.imwrite(os.path.join(path, labels[i], images[i]), resized_img)
+
+# def prepareTrainAndTestFolder(path, prev_path, images, labels):
+#     min_YCrCb = np.array([0, 133, 77], np.uint8)
+#     max_YCrCb = np.array([235, 173, 127], np.uint8)
+#
+#     for i in range(0, len(images)):
+#         img = cv2.imread(os.path.join(prev_path, labels[i], images[i]), 1)
+#         imageYCrCb = cv2.cvtColor(img, cv2.COLOR_BGR2YCR_CB)
+#         skinRegionYCrCb = cv2.inRange(imageYCrCb, min_YCrCb, max_YCrCb)
+#         newimage = cv2.bitwise_and(img, img, mask=skinRegionYCrCb)
+#
+#         resized_img = cv2.resize(newimage, (200, 200), interpolation=cv2.INTER_AREA)
+#         if not (os.path.isfile(os.path.join(path, labels[i], images[i]))):
+#             cv2.imwrite(os.path.join(path, labels[i], images[i]), resized_img)
+
+
+# def prepareTrainAndTestFolder(path, prev_path, images, labels):
+#     for i in range(0, len(images)):
+#         img = cv2.imread(os.path.join(prev_path, labels[i], images[i]), 1)
+#         resized_img = cv2.resize(img, (200, 200), interpolation=cv2.INTER_AREA)
+#         if not (os.path.isfile(os.path.join(path, labels[i], images[i]))):
+#             cv2.imwrite(os.path.join(path, labels[i], images[i]), resized_img)
 
 def createImageForTrainingAndTesting(unique):
     print("The images and labels getting for training and testing\n")
@@ -64,6 +86,14 @@ def createImageForTrainingAndTesting(unique):
             img_array = cv2.imread(os.path.join(path, img), 1)
             train_data.append([img_array, class_num])
 
+    validation_data = []
+    for label in unique:
+        class_num = unique.index(label)
+        path = 'Data\\validation\\' + label
+        for img in os.listdir(path):
+            img_array = cv2.imread(os.path.join(path, img), 1)
+            validation_data.append([img_array, class_num])
+
     test_data = []
     for label in unique:
         class_num = unique.index(label)
@@ -73,8 +103,14 @@ def createImageForTrainingAndTesting(unique):
             test_data.append([img_array, class_num])
 
     random.shuffle(train_data)
+    random.shuffle(validation_data)
     random.shuffle(test_data)
-    return train_data, test_data
+
+    # print("number of train images: ", len(train_data))
+    # print("number of validation images: ", len(validation_data))
+    # print("number of test images: ", len(test_data))
+
+    return train_data, test_data, validation_data
 
 def divideDataAndLabel(data_list):
     X = []
@@ -88,37 +124,40 @@ def divideDataAndLabel(data_list):
     return X, y
 
 """"Modeller kaydediliyor"""
-def trainCNNModel(trainX, trainy):
+def trainCNNModel(trainX, trainy, valX, valy):
     print("Creating model")
 
     if not (os.path.exists("checkpoints")):
         os.makedirs("checkpoints")
 
     checkpointer = ModelCheckpoint(filepath=os.path.join('checkpoints', "CNN_weights" + '.hdf5'), verbose=1)
+
+
     model = Sequential()
-    model.add(Conv2D(8, kernel_size=(3, 3), activation='relu', padding='same', input_shape=trainX.shape[1:]))
+    model.add(Conv2D(32, (3, 3), activation='relu', input_shape=trainX.shape[1:]))
     model.add(MaxPooling2D(pool_size=(2, 2)))
-    model.add(Conv2D(16, (3, 3), padding='same', activation='relu'))
+    model.add(Conv2D(32, (3, 3), activation='relu'))
     model.add(MaxPooling2D(pool_size=(2, 2)))
-    model.add(Conv2D(8, (3, 3), padding='same', activation='relu'))
+    model.add(Conv2D(64, (3, 3), activation='relu'))
+    model.add(MaxPooling2D(pool_size=(2, 2)))
+    model.add(Conv2D(64, (3, 3), activation='relu'))
     model.add(MaxPooling2D(pool_size=(2, 2)))
     model.add(Flatten())
-    model.add(Dense(128, activation='relu'))
-    model.add(Dropout(0.5))
-    model.add(Dense(8, activation='relu'))
+    model.add(Dense(64, activation='relu'))
     model.add(Dropout(0.5))
     model.add(Dense(3, activation='softmax'))
+
     model.summary()
 
     model.compile(loss='categorical_crossentropy',
-                  optimizer='adam',
+                  optimizer='sgd',
                   metrics=['accuracy'])
 
-    model.fit(trainX, trainy, batch_size=4, epochs=50,callbacks=[checkpointer])
+    model.fit(trainX, trainy, validation_data=(valX, valy), batch_size=BATCH_SIZE, epochs=N_EPOCHS,callbacks=[checkpointer])
     return model
 
 def testCNNModel(model, testX, testy):
-    scores = model.evaluate(x=testX, y=testy, batch_size=4, verbose=1)
+    scores = model.evaluate(x=testX, y=testy, batch_size=BATCH_SIZE, verbose=1)
     print("loss :" + str(scores[0]))
     print("acc  :" + str(scores[1]))
 
@@ -181,15 +220,17 @@ def draw_confusion_matrix(testX,testy):
 if __name__ == '__main__':
     if not (os.path.exists('Data')):
         image_names, labels = getImageNamesAndClassLabels()
-        train_images, test_images, train_labels, test_labels = splitDatasetTrainAndTest(image_names, labels)
+        train_images, test_images, train_labels, test_labels, val_images, val_labels = splitDatasetTrainAndTest(image_names, labels)
         createFolders(findUniqueLabels())
         prepareTrainAndTestFolder('Data\\train', 'Dataset', train_images, train_labels)
         prepareTrainAndTestFolder('Data\\test', 'Dataset', test_images, test_labels)
+        prepareTrainAndTestFolder('Data\\validation', 'Dataset', val_images, val_labels)
 
-    train, test = createImageForTrainingAndTesting(findUniqueLabels())
+    train, test, validation = createImageForTrainingAndTesting(findUniqueLabels())
     trainX, trainy = divideDataAndLabel(train)
     testX, testy = divideDataAndLabel(test)
-    model = trainCNNModel(trainX, trainy)
+    valX, valy = divideDataAndLabel(validation)
+    model = trainCNNModel(trainX, trainy, valX, valy)
     testCNNModel(model, testX, testy)
     draw_confusion_matrix(testX, testy)
 
@@ -198,7 +239,7 @@ if __name__ == '__main__':
     print("\nwriting predicted labels on images")
     # test folder
     path = "Data\\test"
-    wanted_class_names = ['rock', 'paper', 'scissors'] # you can add another labels
+    wanted_class_names = ['paper', 'rock', 'scissors']
     class_names = os.listdir(path)
     for c_name in class_names:
         if c_name in wanted_class_names:
