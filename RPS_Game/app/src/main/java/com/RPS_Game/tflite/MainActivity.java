@@ -86,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
         btnDetectObject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                textViewResult.setText("Hamle Belirleniyor...");
                 cameraView.captureImage();
             }
         });
