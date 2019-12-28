@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardView"
+    android:layout_width="match_parent"
+    android:layout_height="150dp"
+    android:padding="5dp" >
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:orientation="horizontal"
+        tools:ignore="MissingConstraints">
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/textViewName"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="@string/hint_name"
+            android:textColor="@color/colorTextHint" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/textViewMove"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="@string/hint_move"
+            android:textColor="@android:color/darker_gray" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/textViewRmove"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="@string/hint_rmove"
+            android:textColor="@color/colorTextHint" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/textViewResult1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="@string/hint_result"
+            android:textColor="@android:color/darker_gray" />
+
+
+
+
+    </LinearLayout>
+
+
+</android.support.constraint.ConstraintLayout>
