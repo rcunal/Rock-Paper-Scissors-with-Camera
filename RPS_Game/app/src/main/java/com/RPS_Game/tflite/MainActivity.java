@@ -1,5 +1,6 @@
 package com.RPS_Game.tflite;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -39,10 +40,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         cameraView = findViewById(R.id.cameraView);
         imageViewResult = findViewById(R.id.imageViewResult);
-        textViewResult = findViewById(R.id.textViewResult);
+        textViewResult = findViewById(R.id.textResult);
 
         btnToggleCamera = findViewById(R.id.btnToggleCamera);
         btnDetectObject = findViewById(R.id.btnDetectObject);
+
+        final String nameFromIntent = getIntent().getStringExtra("NAME");
 
         cameraView.addCameraKitListener(new CameraKitEventListener() {
             @Override
@@ -66,7 +69,16 @@ public class MainActivity extends AppCompatActivity {
 
                 final List<Classifier.Recognition> results = classifier.recognizeImage(bitmap);
 
+
                 textViewResult.setText(results.toString());
+
+
+
+                Intent intentRegister1 = new Intent(MainActivity.this, Result.class);
+                intentRegister1.putExtra("RESULT", String.valueOf(results.get(0)));
+                intentRegister1.putExtra("NAME", nameFromIntent);
+                startActivity(intentRegister1);
+
 
             }
 
@@ -86,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
         btnDetectObject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                textViewResult.setText("Hamle Belirleniyor...");
                 cameraView.captureImage();
             }
         });
