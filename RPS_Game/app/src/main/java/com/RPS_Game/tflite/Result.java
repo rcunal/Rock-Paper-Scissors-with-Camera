@@ -1,12 +1,17 @@
 package com.RPS_Game.tflite;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 
 
 import com.RPS_Game.model.Record;
@@ -19,6 +24,18 @@ public class Result extends AppCompatActivity {
     private Button goMain;
     private Button goLobi;
     private TextView textResult;
+    private TextView userMoveText;
+    private TextView randomMoveText;
+    private ImageView imageViewRandom;
+    private ImageView imageViewUser;
+    private Record record;
+    //private final String nameFromIntent;
+    //değişkenler
+    int result = -10;
+    int mtr [][] = {{0, -1, 1}, {1, 0, -1}, {-1, 1, 0}};
+    int sonuc;
+    int random;
+    int randomid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,10 +45,17 @@ public class Result extends AppCompatActivity {
         goMain = findViewById(R.id.goMain);
         goLobi = findViewById(R.id.goLobi);
         textResult = findViewById(R.id.textResult);
+        userMoveText = findViewById(R.id.userMoveText);
+        randomMoveText = findViewById(R.id.randomMoveText);
+        imageViewRandom = findViewById(R.id.imageViewRandom);
+        imageViewUser = findViewById(R.id.imageViewUser);
 
         Intent intent = getIntent();
         String id = intent.getStringExtra("RESULT");
+        Bitmap bitmap = (Bitmap) intent.getParcelableExtra("USERIMAGE");
         final String nameFromIntent = getIntent().getStringExtra("NAME");
+
+
 
         goMain.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,15 +77,7 @@ public class Result extends AppCompatActivity {
 
 
 
-        System.out.println("id " + id); //+++++++++++++++++
-
-        int result = -10;
-        int[][] mtr;
-        mtr = new int[][]{{0, -1, 1}, {1, 0, -1}, {-1, 1, 0}};
-        int sonuc;
-
         id = id.split(" ")[0];
-        System.out.println("id22 " + id); //+++++++++++++++++
 
 
         if( id.equals("rock") ){
@@ -76,8 +92,7 @@ public class Result extends AppCompatActivity {
             //2
             result = 2;
         }
-        System.out.println("id11111 " + result);
-        int random = new Random().nextInt(3);
+        random = new Random().nextInt(3);
         System.out.println("id11111 " + random);
 
         sonuc = mtr[result][random];
@@ -93,8 +108,11 @@ public class Result extends AppCompatActivity {
         else if(random == 2){
             randomString = randomString + "scissors";
         }
-
-        System.out.println("id11111 " + sonuc);
+        randomid = getResources().getIdentifier("com.RPS_Game.tflite:drawable/" + randomString, null, null);
+        imageViewRandom.setImageResource(randomid);
+        imageViewUser.setImageBitmap(bitmap);
+        imageViewUser.setBackgroundColor(Color.GRAY);
+        imageViewRandom.setBackgroundColor(Color.GRAY);
 
 
         if (sonuc == 0){
@@ -102,14 +120,18 @@ public class Result extends AppCompatActivity {
         }
         else if(sonuc == 1){
             resultString = resultString + "Kazandın";
+            imageViewUser.setBackgroundColor(Color.GREEN);
+            imageViewRandom.setBackgroundColor(Color.RED);
         }
         else if(sonuc == -1){
             resultString = resultString + "Kaybettin";
+            imageViewUser.setBackgroundColor(Color.RED);
+            imageViewRandom.setBackgroundColor(Color.GREEN);
         }
         textResult.setText(" " + " " + resultString);
         //String name = "ozcan";
         //Record record = new Record(nameFromIntent,String.valueOf(result),String.valueOf(random),String.valueOf(sonuc));
-        Record record = new Record(nameFromIntent,id,randomString,resultString,String.valueOf(sonuc));
+        record = new Record(nameFromIntent,id,randomString,resultString,String.valueOf(sonuc));
         DatabaseHelper databaseHelper = new DatabaseHelper(Result.this);
         databaseHelper.addRecord(record);
 

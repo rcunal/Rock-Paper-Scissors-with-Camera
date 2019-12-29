@@ -16,7 +16,7 @@
         tools:ignore="MissingConstraints">
 
         <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/textViewName"
+            android:id="@+id/randomMove"
 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

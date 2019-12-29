@@ -3,8 +3,8 @@ package com.RPS_Game.tflite;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatButton;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.RPS_Game.sql.DatabaseHelper;
@@ -13,9 +13,9 @@ public class Lobi extends AppCompatActivity {
 
     DatabaseHelper databaseHelper;
 
-    private Button gameButton;
-    private Button scoreButton;
-    private Button setScoreButton;
+    private AppCompatButton gameButton;
+    private AppCompatButton scoreButton;
+    private AppCompatButton setScoreButton;
     private TextView textViewName;
     private TextView scoreText;
     private String sumScore;
@@ -29,8 +29,8 @@ public class Lobi extends AppCompatActivity {
 
         gameButton = findViewById(R.id.gameButton);
         scoreButton = findViewById(R.id.scoreButton);
-        textViewName = findViewById(R.id.textViewName);
-        scoreText = findViewById(R.id.scoreText);
+        textViewName = findViewById(R.id.randomMove);
+        scoreText = findViewById(R.id.resultText);
         setScoreButton = findViewById(R.id.setScoreButton);
 
         final String nameFromIntent = getIntent().getStringExtra("NAME");

@@ -11,6 +11,7 @@ import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 
@@ -35,6 +36,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private InputValidation inputValidation;
     private DatabaseHelper databaseHelper;
 
+    private ImageView id;
+
     private Snackbar snackbar;
 
     @Override
@@ -46,6 +49,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         initViews();
         initListeners();
         initObjects();
+        /*
+        int icon = getResources().getIdentifier("com.RPS_Game.tflite:drawable/" + "rpslogo", null, null);
+        id.setImageResource(icon);*/
+
     }
 
     /**
@@ -71,11 +78,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         textInputLayoutPassword = findViewById(R.id.textInputLayoutPassword);
 
         textInputEditTextName = findViewById(R.id.textInputEditTextName);
-        textInputEditTextPassword = findViewById(R.id.textInputEditTextPassword);
+        textInputEditTextPassword = findViewById(R.id.resultText);
 
-        appCompatButtonLogin = findViewById(R.id.appCompatButtonLogin);
+        appCompatButtonLogin = findViewById(R.id.setScoreButton);
 
         textViewLinkRegister = findViewById(R.id.textViewLinkRegister);
+
+        id = findViewById(R.id.icon);
     }
 
 
@@ -95,7 +104,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.appCompatButtonLogin:
+            case R.id.setScoreButton:
                 verifyFromSQLite();
                 /*Intent intentRegister1 = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intentRegister1);*/

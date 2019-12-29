@@ -12,9 +12,6 @@ import com.RPS_Game.tflite.R;
 
 import java.util.List;
 
-/**
- * Created by qosmio on 15.01.2019.
- */
 
 public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.MyViewHolder> {
 
@@ -29,7 +26,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.MyViewHold
         public MyViewHolder(View view) {
             super(view);
             view.setOnClickListener(this);
-            textViewName = (TextView) view.findViewById(R.id.textViewName);
+            textViewName = (TextView) view.findViewById(R.id.randomMove);
             textViewMove = (TextView) view.findViewById(R.id.textViewMove);
             textViewRMove = (TextView) view.findViewById(R.id.textViewRmove);
             textViewResult = (TextView) view.findViewById(R.id.textViewResult1);

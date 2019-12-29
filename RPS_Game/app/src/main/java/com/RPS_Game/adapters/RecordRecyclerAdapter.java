@@ -47,9 +47,7 @@ public class RecordRecyclerAdapter extends RecyclerView.Adapter<RecordRecyclerAd
     }
 
 
-    /**
-     * ViewHolder class
-     */
+
     public class UserViewHolder extends RecyclerView.ViewHolder {
 
         public AppCompatTextView textViewName;
@@ -59,7 +57,7 @@ public class RecordRecyclerAdapter extends RecyclerView.Adapter<RecordRecyclerAd
 
         public UserViewHolder(View view) {
             super(view);
-            textViewName = (AppCompatTextView) view.findViewById(R.id.textViewName);
+            textViewName = (AppCompatTextView) view.findViewById(R.id.randomMove);
             textViewMove = (AppCompatTextView) view.findViewById(R.id.textViewMove);
             textViewRMove = (AppCompatTextView) view.findViewById(R.id.textViewRmove);
             textViewResult = (AppCompatTextView) view.findViewById(R.id.textResult);

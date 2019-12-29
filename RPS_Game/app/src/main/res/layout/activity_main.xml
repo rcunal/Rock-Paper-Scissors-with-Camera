@@ -7,6 +7,7 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
+    android:background="@drawable/bg_login"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.RPS_Game.tflite.MainActivity">
 
@@ -39,7 +40,7 @@
             android:gravity="center"
             android:maxLines="15"
             android:scrollbars="vertical"
-            android:textColor="@android:color/black" />
+            android:textColor="@android:color/white" />
 
     </LinearLayout>
 
@@ -50,18 +51,24 @@
         android:layout_height="48dp"
         android:layout_gravity="bottom|center"
         android:layout_marginBottom="50dp"
+        android:background="@drawable/btn_bg"
         android:text="@string/kamera_cevir"
         android:textAllCaps="false"
-        android:textColor="@android:color/black" />
+        android:textColor="#F5F7F8"
+        android:textColorHint="#00F8F7F7"
+        android:textStyle="bold" />
 
     <Button
         android:id="@+id/btnDetectObject"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_gravity="bottom|center"
+        android:background="@drawable/btn_bg"
         android:text="@string/hamleyi_belirle"
         android:textAllCaps="false"
-        android:textColor="@android:color/black"
+        android:textColor="#F5F7F8"
+        android:textColorHint="#00F8F7F7"
+        android:textStyle="bold"
         android:visibility="gone" />
 
 </FrameLayout>

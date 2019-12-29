@@ -2,10 +2,19 @@
 <resources>
     <!-- <color name="colorPrimary">#3F51B5</color> -->
     <!-- <color name="colorPrimaryDark">#303F9F</color> -->
-    <color name="colorPrimary">#51d8c7</color>
-    <color name="colorPrimaryDark">#51d8c7</color>
-    <color name="colorAccent">#FFFFFF</color>
+
     <color name="colorBackground">#413e4f</color>
     <color name="colorText">#FFFFFF</color>
-    <color name="colorTextHint">#51d8c7</color>
+    <color name="colorTextHint">#46E0CC</color>
+    <color name="light_blue">#17CDFC</color>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="dark_blue">#3023AE</color>
+    <color name="purple">#c86dd7</color>
+
+    <color name="login_form_details">#ccffffff</color>
+    <color name="login_form_details_light">#1affffff</color>
+    <color name="login_form_details_medium">#66ffffff</color>
+
 </resources>

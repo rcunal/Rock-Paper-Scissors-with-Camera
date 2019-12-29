@@ -2,6 +2,7 @@ package com.RPS_Game.tflite;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -77,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intentRegister1 = new Intent(MainActivity.this, Result.class);
                 intentRegister1.putExtra("RESULT", String.valueOf(results.get(0)));
                 intentRegister1.putExtra("NAME", nameFromIntent);
+                intentRegister1.putExtra("USERIMAGE", bitmap);
                 startActivity(intentRegister1);
 
 

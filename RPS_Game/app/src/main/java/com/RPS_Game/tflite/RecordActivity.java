@@ -11,7 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-import android.os.Handler;
 
 import com.RPS_Game.adapters.RecordAdapter;
 import com.RPS_Game.model.Record;
@@ -60,7 +59,7 @@ public class RecordActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        textViewName = (AppCompatTextView) findViewById(R.id.textViewName);
+        textViewName = (AppCompatTextView) findViewById(R.id.randomMove);
         recyclerViewUsers = (RecyclerView) findViewById(R.id.recyclerViewUsers);
         clearButton = findViewById(R.id.clearButton);
     }
