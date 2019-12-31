@@ -85,34 +85,16 @@ public class RecordActivity extends AppCompatActivity {
         getDataFromSQLite();
 
 
-
-//
-//        recordRecyclerAdapter = new RecordRecyclerAdapter(listRecords);
-//        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-//        recyclerViewUsers.setLayoutManager(mLayoutManager);
-//        recyclerViewUsers.setItemAnimator(new DefaultItemAnimator());
-//        recyclerViewUsers.setHasFixedSize(true);
-//        recyclerViewUsers.setAdapter(recordRecyclerAdapter);
-//        databaseHelper = new DatabaseHelper(RecordActivity.this);
-//
-//        String emailFromIntent = getIntent().getStringExtra("EMAIL");
-//        textViewName.setText(emailFromIntent);
-
     }
 
 
 
     @SuppressLint("StaticFieldLeak")
     private void getDataFromSQLite() {
-        //listRecords = new ArrayList<>();
 
         System.out.println("in getDataFromSqlite");
-//        listRecords.clear();
-//        listRecords.addAll(databaseHelper.getAllRecord());
 
 
-
-        // AsyncTask is used that SQLite operation not blocks the UI Thread.
         new AsyncTask<Void, Void, Void>() {
 
             @Override
@@ -120,9 +102,6 @@ public class RecordActivity extends AppCompatActivity {
                 listRecords.clear();
                 final String nameFromIntent = getIntent().getStringExtra("NAME");
                 listRecords.addAll(databaseHelper.getAllRecord(nameFromIntent));
-//                userList.clear();
-//                userList.addAll(databaseHelper.getAllUser());
-//                listRecords.set(0,rec);
                 System.out.println("after addAll");
                 return null;
             }

@@ -18,7 +18,6 @@ public class Lobi extends AppCompatActivity {
     private AppCompatButton setScoreButton;
     private TextView textViewName;
     private TextView scoreText;
-    private String sumScore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,13 +38,6 @@ public class Lobi extends AppCompatActivity {
         setScoreButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*sumScore = databaseHelper.getScore(nameFromIntent);
-                if(sumScore.equals("")){
-
-                    scoreText.setText("Henüz Skorunuz yok Oyuna Başlayın :)");
-                }else{
-                    scoreText.setText("Skorunuz :" + sumScore);
-                }*/
                 scoreText.setText("Skorunuz :" + databaseHelper.getScore(nameFromIntent));
             }
         });

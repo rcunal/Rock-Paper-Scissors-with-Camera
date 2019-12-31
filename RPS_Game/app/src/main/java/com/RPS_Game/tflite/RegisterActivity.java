@@ -53,9 +53,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         initObjects();
     }
 
-    /**
-     * This method is to initialize views
-     */
+
     private void initViews() {
         nestedScrollView = (NestedScrollView) findViewById(R.id.nestedScrollView);
 
@@ -133,8 +131,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
             databaseHelper.addUser(user);
 
-            // Snack Bar to show success message that record saved successfully
-            //Snackbar.make(nestedScrollView, getString(R.string.success_message), Snackbar.LENGTH_LONG).show();
             Toast toast = Toast.makeText(getApplicationContext(),
                     R.string.success_message, Toast.LENGTH_SHORT);
             toast.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, 0);
@@ -145,8 +141,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
 
         } else {
-            // Snack Bar to show error message that record already exists
-            //Snackbar.make(nestedScrollView, getString(R.string.error_name_exists), Snackbar.LENGTH_LONG).show();
             Toast toast = Toast.makeText(getApplicationContext(),
                     R.string.error_name_exists, Toast.LENGTH_SHORT);
             toast.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, 0);
@@ -157,9 +151,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
-    /**
-     * This method is to empty all input edit text
-     */
+
     private void emptyInputEditText() {
         textInputEditTextName.setText(null);
         textInputEditTextEmail.setText(null);

@@ -29,8 +29,6 @@ public class Result extends AppCompatActivity {
     private ImageView imageViewRandom;
     private ImageView imageViewUser;
     private Record record;
-    //private final String nameFromIntent;
-    //değişkenler
     int result = -10;
     int mtr [][] = {{0, -1, 1}, {1, 0, -1}, {-1, 1, 0}};
     int sonuc;
@@ -129,13 +127,9 @@ public class Result extends AppCompatActivity {
             imageViewRandom.setBackgroundColor(Color.GREEN);
         }
         textResult.setText(" " + " " + resultString);
-        //String name = "ozcan";
-        //Record record = new Record(nameFromIntent,String.valueOf(result),String.valueOf(random),String.valueOf(sonuc));
         record = new Record(nameFromIntent,id,randomString,resultString,String.valueOf(sonuc));
         DatabaseHelper databaseHelper = new DatabaseHelper(Result.this);
         databaseHelper.addRecord(record);
-
-//                +++++++++++++++++++++++++++++++++++++++++++
 
 
 

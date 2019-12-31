@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.amitshekhar.tflite", appContext.getPackageName());
+        assertEquals("com.RPS_Game.tflite", appContext.getPackageName());
     }
 }
