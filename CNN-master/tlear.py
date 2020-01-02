@@ -52,20 +52,6 @@ def createFolders(unique_labels, path='Data'):
             if not (os.path.exists(os.path.join(path, folder_name, labels))):
                 os.makedirs(os.path.join(path, folder_name, labels))
 
-# def prepareTrainAndTestFolder(path, prev_path, images, labels):
-#     min_YCrCb = np.array([0, 133, 77], np.uint8)
-#     max_YCrCb = np.array([235, 173, 127], np.uint8)
-#
-#     for i in range(0, len(images)):
-#         img = cv2.imread(os.path.join(prev_path, labels[i], images[i]), 1)
-#         imageYCrCb = cv2.cvtColor(img, cv2.COLOR_BGR2YCR_CB)
-#         skinRegionYCrCb = cv2.inRange(imageYCrCb, min_YCrCb, max_YCrCb)
-#         newimage = cv2.bitwise_and(img, img, mask=skinRegionYCrCb)
-#
-#         resized_img = cv2.resize(newimage, (200, 200), interpolation=cv2.INTER_AREA)
-#         if not (os.path.isfile(os.path.join(path, labels[i], images[i]))):
-#             cv2.imwrite(os.path.join(path, labels[i], images[i]), resized_img)
-
 def prepareTrainAndTestFolder(path, prev_path, images, labels):
     for i in range(0, len(images)):
         img = cv2.imread(os.path.join(prev_path, labels[i], images[i]), 1)
@@ -132,45 +118,25 @@ def trainCNNModel(trainX, trainy, valX, valy):
 
 
     base_model = MobileNet(weights='imagenet',
-                           include_top=False)  # imports the mobilenet model and discards the last 1000 neuron layer.
+                           include_top=False)  
 
     x = base_model.output
     x = GlobalAveragePooling2D()(x)
     x = Dense(1024, activation='relu')(
-        x)  # we add dense layers so that the model can learn more complex functions and classify for better results.
-    x = Dense(1024, activation='relu')(x)  # dense layer 2
-    x = Dense(512, activation='relu')(x)  # dense layer 3
-    preds = Dense(3, activation='softmax')(x)  # final layer with softmax activation
+        x)  
+    x = Dense(1024, activation='relu')(x) 
+    x = Dense(512, activation='relu')(x) 
+    preds = Dense(3, activation='softmax')(x) 
 
-    # In[3]:
-
+    
     model = Model(inputs=base_model.input, outputs=preds)
-    # specify the inputs
-    # specify the outputs
-    # now a model has been created based on our architecture
-
-    # In[4]:
+    
 
     for layer in model.layers[:20]:
         layer.trainable = False
     for layer in model.layers[20:]:
         layer.trainable = True
 
-
-    # model = Sequential()
-    # model.add(model)
-    # model.add(Conv2D(32, (3, 3), activation='relu', input_shape=trainX.shape[1:]))
-    # model.add(MaxPooling2D(pool_size=(2, 2)))
-    # model.add(Conv2D(32, (3, 3), activation='relu'))
-    # model.add(MaxPooling2D(pool_size=(2, 2)))
-    # model.add(Conv2D(64, (3, 3), activation='relu'))
-    # model.add(MaxPooling2D(pool_size=(2, 2)))
-    # model.add(Conv2D(64, (3, 3), activation='relu'))
-    # model.add(MaxPooling2D(pool_size=(2, 2)))
-    # model.add(Flatten())
-    # model.add(Dense(64, activation='relu'))
-    # model.add(Dropout(0.5))
-    # model.add(Dense(3, activation='softmax'))
 
     model.summary()
 
@@ -260,10 +226,8 @@ if __name__ == '__main__':
     testCNNModel(model, testX, testy)
     draw_confusion_matrix(testX, testy)
 
-    #model = load_model("checkpoints/CNN_weights.hdf5")
-
+   
     print("\nwriting predicted labels on images")
-    # test folder
     path = "Data\\test"
     wanted_class_names = ['paper', 'rock', 'scissors']
     class_names = os.listdir(path)
@@ -273,3 +237,11 @@ if __name__ == '__main__':
             for i_name in image_names:
                 image_predict_class = predictImages(path, c_name, i_name)
                 putText(cv2.imread(os.path.join(path, c_name, i_name), 1), image_predict_class, c_name, i_name)
+    keras_model = "keras_mdl.h5"
+    keras.models.save_model(model, keras_model)
+    converter = tf.lite.TFLiteConverter.from_keras_model_file('keras_mdl.h5')
+
+    tflite_model = converter.convert()
+
+    with open('tflite_rps.tflite', 'wb') as f:
+        f.write(tflite_model)
